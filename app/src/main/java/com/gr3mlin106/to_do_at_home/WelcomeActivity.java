@@ -15,6 +15,8 @@ import com.parse.ParseUser;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    public static Boolean parseInit = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,21 +27,34 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
 
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this);
+        if(!parseInit){
+            Parse.enableLocalDatastore(this);
+            Parse.initialize(this);
+            parseInit =true;
+        }
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             Intent i = new Intent(getBaseContext(), MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }
-
-        Button loginButton = (Button) findViewById(R.id.buttonLogin);
-        loginButton.setOnClickListener( new View.OnClickListener() {
+        Button loginButton = (Button) findViewById(R.id.welcome_login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+        Button registerButton = (Button) findViewById(R.id.welcome_register_button);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), RegisterActivity.class);
                 startActivity(i);
             }
         });

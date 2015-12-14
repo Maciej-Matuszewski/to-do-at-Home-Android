@@ -1,17 +1,41 @@
 <resources>
-    <string name="app_name">to-do@HOME</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="app_name">to-do@Home</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">Sign in</string>
 
-    <!-- Strings related to login -->
+    <string name="title_activity_main">to-do: Today</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_add_home">Add home</string>
+
+
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_repeat">Repeat password</string>
+
+    <string-array name="sex_select_array">
+        <item>Women</item>
+        <item>Men</item>
+    </string-array>
+
+    <string name="action_sign_in">Register</string>
+    <string name="action_log_in">Login</string>
+    <string name="action_house_connect">Connect to home</string>
+    <string name="action_create_house">Create home</string>
+
+    <string name="prompt_house_id">House ID</string>
+
+
+
+
+
+
+
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -20,4 +44,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+
 </resources>

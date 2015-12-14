@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gr3mlin106.to_do_at_home.LoginActivity">
+    tools:context="com.gr3mlin106.to_do_at_home.AddHomeActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -35,10 +35,10 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/login_email_textField"
+                    android:id="@+id/addHome_houseID_textfield"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="@string/prompt_house_id"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/login_password_textField"
+                    android:id="@+id/addHome_password_textField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -64,13 +64,33 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/login_login_button"
+                android:id="@+id/addHome_connectToHome_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_log_in"
+                android:text="@string/action_house_connect"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="OR"
+                android:id="@+id/textView2"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp" />
+
+            <Button
+                style="?android:textAppearanceSmall"
+                android:id="@+id/addHome_createNewHome_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_create_house"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
     </ScrollView>

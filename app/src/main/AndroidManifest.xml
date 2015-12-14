@@ -41,7 +41,24 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName=".WelcomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gr3mlin106.to_do_at_home.WelcomeActivity" />
+        </activity>
+        <activity
+            android:name=".AddHomeActivity"
+            android:label="@string/title_activity_add_home"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gr3mlin106.to_do_at_home.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
