@@ -61,9 +61,8 @@
         </activity>
         <activity
             android:name=".NewHomeCompleteActivity"
-            android:label="@string/title_activity_new_home_complete">
-
-        </activity>
+            android:label="@string/title_activity_new_home_complete"></activity>
+        <activity android:name=".ParseTest"></activity>
     </application>
 
 </manifest>

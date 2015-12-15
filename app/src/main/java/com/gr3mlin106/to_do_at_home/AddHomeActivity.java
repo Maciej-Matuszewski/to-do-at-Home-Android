@@ -69,7 +69,6 @@ public class AddHomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final ParseObject home = new ParseObject("Home");
                 home.put("password", randomString(8));
-                home.addUnique("users", ParseUser.getCurrentUser());
                 home.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -99,7 +98,6 @@ public class AddHomeActivity extends AppCompatActivity {
                         if (e == null) {
                             if(object.getString("password").equals(((EditText)findViewById(R.id.addHome_password_textField)).getText().toString())){
 
-                                object.addUnique("users", ParseUser.getCurrentUser());
                                 object.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
