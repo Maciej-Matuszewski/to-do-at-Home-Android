@@ -29,8 +29,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -39,11 +45,44 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class AddHomeActivity extends AppCompatActivity {
 
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static Random rnd = new Random();
+
+    String randomString( int len ){
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_home);
         setupActionBar();
+
+        Button createHome = (Button) findViewById(R.id.addHome_createNewHome_button);
+        createHome.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ParseObject home = new ParseObject("Home");
+                home.put("password",randomString(8));
+                home.addUnique("users",ParseUser.getCurrentUser());
+                home.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        ParseUser user = ParseUser.getCurrentUser();
+                        user.put("home",home);
+                        user.saveInBackground();
+                    }
+                });
+
+
+
+
+            }
+        });
+
     }
 
     @Override

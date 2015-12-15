@@ -21,11 +21,8 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setTheme(R.style.AppTheme_NoActionBar);
-
         setContentView(R.layout.activity_welcome);
-
 
         if(!parseInit){
             Parse.enableLocalDatastore(this);
@@ -39,13 +36,13 @@ public class WelcomeActivity extends AppCompatActivity {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }
+
         Button loginButton = (Button) findViewById(R.id.welcome_login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getBaseContext(), LoginActivity.class);
-                startActivity(i);
+                startActivity(new Intent(getBaseContext(), LoginActivity.class));
             }
         });
 
@@ -54,8 +51,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getBaseContext(), RegisterActivity.class);
-                startActivity(i);
+                startActivity(new Intent(getBaseContext(), RegisterActivity.class));
             }
         });
 
