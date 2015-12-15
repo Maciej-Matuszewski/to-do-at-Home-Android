@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gr3mlin106.to_do_at_home.AddHomeActivity">
+    tools:context="com.gr3mlin106.to_do_at_home.AddHomeActivity"
+    android:id="@+id/addHomeLinearLayout">
 
     <!-- Login progress -->
     <ProgressBar
@@ -38,7 +39,7 @@
                     android:id="@+id/addHome_houseID_textfield"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_house_id"
+                    android:hint="@string/prompt_home_id"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true" />

@@ -53,11 +53,16 @@
         <activity
             android:name=".AddHomeActivity"
             android:label="@string/title_activity_add_home"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gr3mlin106.to_do_at_home.MainActivity" />
+        </activity>
+        <activity
+            android:name=".NewHomeCompleteActivity"
+            android:label="@string/title_activity_new_home_complete">
+
         </activity>
     </application>
 

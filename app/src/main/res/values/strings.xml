@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">to-do@Home</string>
 
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -11,12 +10,13 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_add_home">Add home</string>
-
+    <string name="title_activity_new_home_complete">Congratulation</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_name">Name</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_repeat">Repeat password</string>
+    <string name="prompt_home_id">Home ID</string>
 
     <string-array name="sex_select_array">
         <item>Women</item>
@@ -27,11 +27,6 @@
     <string name="action_log_in">Login</string>
     <string name="action_house_connect">Connect to home</string>
     <string name="action_create_house">Create home</string>
-
-    <string name="prompt_house_id">House ID</string>
-
-
-
 
 
 

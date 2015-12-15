@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -28,10 +29,16 @@ public class WelcomeActivity extends AppCompatActivity {
             Parse.enableLocalDatastore(this);
             Parse.initialize(this);
             parseInit =true;
+
         }
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
+            try {
+                currentUser = currentUser.fetch();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             Intent i = new Intent(getBaseContext(), MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);

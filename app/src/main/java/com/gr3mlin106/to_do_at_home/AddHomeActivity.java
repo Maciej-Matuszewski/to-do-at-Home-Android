@@ -3,6 +3,7 @@ package com.gr3mlin106.to_do_at_home;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -29,8 +30,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -61,25 +64,64 @@ public class AddHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_home);
         setupActionBar();
 
-        Button createHome = (Button) findViewById(R.id.addHome_createNewHome_button);
-        createHome.setOnClickListener(new OnClickListener() {
+        ((Button) findViewById(R.id.addHome_createNewHome_button)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ParseObject home = new ParseObject("Home");
-                home.put("password",randomString(8));
-                home.addUnique("users",ParseUser.getCurrentUser());
+                home.put("password", randomString(8));
+                home.addUnique("users", ParseUser.getCurrentUser());
                 home.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         ParseUser user = ParseUser.getCurrentUser();
-                        user.put("home",home);
-                        user.saveInBackground();
+                        user.put("home", home);
+                        user.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                Intent i = new Intent(getBaseContext(), NewHomeCompleteActivity.class);
+                                i.putExtra("homeID", home.getObjectId());
+                                i.putExtra("homePassword", (String) home.get("password"));
+                                startActivity(i);
+                                finish();
+                            }
+                        });
                     }
                 });
+            }
+        });
 
+        ((Button)findViewById(R.id.addHome_connectToHome_button)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Home");
+                query.getInBackground(((EditText)findViewById(R.id.addHome_houseID_textfield)).getText().toString(), new GetCallback<ParseObject>() {
+                    public void done(final ParseObject object, ParseException e) {
+                        if (e == null) {
+                            if(object.getString("password").equals(((EditText)findViewById(R.id.addHome_password_textField)).getText().toString())){
 
+                                object.addUnique("users", ParseUser.getCurrentUser());
+                                object.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        ParseUser user = ParseUser.getCurrentUser();
+                                        user.put("home", object);
+                                        user.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                finish();
+                                            }
+                                        });
+                                    }
+                                });
 
-
+                            }else{
+                                showMessageInfo("Password is not correct!");
+                            }
+                        } else {
+                            showMessageInfo("Home not exist!");
+                        }
+                    }
+                });
             }
         });
 
@@ -99,6 +141,11 @@ public class AddHomeActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+    }
+
+    private void showMessageInfo(String messageText){
+        Snackbar.make(findViewById(R.id.addHomeLinearLayout), messageText, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
 

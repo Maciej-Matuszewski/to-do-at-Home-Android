@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity
@@ -51,10 +52,20 @@ public class MainActivity extends AppCompatActivity
         if(!currentUser.has("home")){
             Intent i = new Intent(getBaseContext(), AddHomeActivity.class);
             startActivity(i);
+        }else{
+            ParseObject home = currentUser.getParseObject("home");
+
+            showMessageInfo(home.getObjectId());
+
         }
 
 
 
+    }
+
+    private void showMessageInfo(String messageText){
+        Snackbar.make(findViewById(R.id.mainLayout), messageText, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     @Override
