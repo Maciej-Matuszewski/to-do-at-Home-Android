@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,12 +14,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.parse.FindCallback;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ListView mainListView;
+    private ArrayAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +70,38 @@ public class MainActivity extends AppCompatActivity
         }
 
 
+        mainListView = (ListView) findViewById( R.id.main_taskList_listView );
+
+        listAdapter = new ArrayAdapter<String>(this, R.layout.task_list_item, new ArrayList<String>());
+
+        mainListView.setAdapter(listAdapter);
+
+        loadTasks();
 
     }
+
+    private void loadTasks(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Task");
+        query.whereLessThan("startDate",new Date());
+        query.whereGreaterThan("endDate", new Date());
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, com.parse.ParseException e) {
+                if (e == null) {
+
+                    for(ParseObject task : objects){
+                        listAdapter.add(task.getString("title"));
+                    }
+                    //listAdapter.notifyDataSetChanged();
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
 
     private void showMessageInfo(String messageText){
         Snackbar.make(findViewById(R.id.mainLayout), messageText, Snackbar.LENGTH_LONG)

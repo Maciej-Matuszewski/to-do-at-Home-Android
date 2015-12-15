@@ -38,6 +38,7 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -81,14 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        mSexSelectSpinner = (Spinner) findViewById(R.id.register_sex_spinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.sex_select_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSexSelectSpinner.setAdapter(adapter);
-
         Button mEmailSignInButton = (Button) findViewById(R.id.register_register_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -116,9 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
             user.setUsername(mEmailView.getText().toString());
             user.setPassword(mPasswordView.getText().toString());
             user.setEmail(mEmailView.getText().toString());
-
+            user.put("unavailableUntil",new Date());
             user.put("name", mNameView.getText().toString());
-            user.put("women", mSexSelectSpinner.getSelectedItemId() == 0 ? true : false);
 
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
