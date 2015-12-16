@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,8 +38,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ListView mainListView;
-    private ArrayAdapter listAdapter;
+    private ListView listview;
+    private TaskAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +77,12 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        ListView listview = (ListView) findViewById(R.id.main_taskList_listView);
-        listview.setAdapter(new yourAdapter(this, new String[] { "data1",
-                "data2" }));
+        listview = (ListView) findViewById(R.id.main_taskList_listView);
+
+        taskAdapter = new TaskAdapter(this);
+
+        listview.setAdapter(taskAdapter);
+
 
         //mainListView = (ListView) findViewById( R.id.main_taskList_listView);
 
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 
         //mainListView.setAdapter(listAdapter);
 
-        //loadTasks();
+        loadTasks();
 
     }
 
@@ -100,9 +105,22 @@ public class MainActivity extends AppCompatActivity
                 if (e == null) {
 
                     for(ParseObject task : objects){
-                        listAdapter.add(task.getString("title"));
+
+                        if(!task.getBoolean("done")){
+                            TaskRecord tr = new TaskRecord();
+                            tr.title = task.getString("title");
+                            tr.id = task.getObjectId();
+                            tr.done = task.getBoolean("done");
+                            tr.startDate = task.getDate("startDate");
+                            tr.endDate = task.getDate("endDate");
+                            tr.parseObject = task;
+
+                            taskAdapter.add(tr);
+                        }
+
+
                     }
-                    //listAdapter.notifyDataSetChanged();
+                    taskAdapter.notifyDataSetChanged();
 
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
@@ -175,30 +193,34 @@ public class MainActivity extends AppCompatActivity
     }
 }
 
-class yourAdapter extends BaseAdapter {
+class TaskAdapter extends BaseAdapter {
 
     Context context;
-    String[] data;
+    ArrayList <TaskRecord> tasks = new ArrayList<>();
+
     private static LayoutInflater inflater = null;
 
-    public yourAdapter(Context context, String[] data) {
+    public TaskAdapter(Context context) {
         // TODO Auto-generated constructor stub
         this.context = context;
-        this.data = data;
+
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void add(TaskRecord taskRecord){
+        this.tasks.add(taskRecord);
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return data.length;
+        return tasks.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
-        return data[position];
+        return tasks.get(position);
     }
 
     @Override
@@ -208,13 +230,55 @@ class yourAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.task_list_item, null);
-        TextView text = (TextView) vi.findViewById(R.id.text);
-        text.setText(data[position]);
+
+        final TaskRecord tr = tasks.get(position);
+
+        ((TextView) vi.findViewById(R.id.taskListItem_title)).setText(tr.title);
+
+        int hours = (int) (((tr.endDate.getTime() - (new Date()).getTime()) / 1000) / 3600);
+
+        final TextView timeLabel = ((TextView) vi.findViewById(R.id.taskListItem_time));
+        timeLabel.setText(vi.getResources().getString(R.string.prompt_time_left) + ": " + hours + "h");
+
+
+        final View view = vi;
+
+        final ImageButton doneButton = (ImageButton) vi.findViewById(R.id.taskListItem_done_button);
+        if(tr.done){
+            doneButton.setVisibility(View.INVISIBLE);
+            timeLabel.setText(vi.getResources().getString(R.string.prompt_done));
+        }
+        else{
+            doneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    tr.done = true;
+                    timeLabel.setText(v.getResources().getString(R.string.prompt_done));
+                    doneButton.setVisibility(View.INVISIBLE);
+                    ParseObject object = tr.parseObject;
+                    object.put("done",true);
+                    object.saveInBackground();
+
+                }
+            });
+        }
+
         return vi;
     }
+}
+
+class TaskRecord{
+    String title;
+    String id;
+    Date startDate;
+    Date endDate;
+    Boolean done;
+    ParseObject parseObject;
+
 }

@@ -17,6 +17,8 @@
     <string name="prompt_password">Password</string>
     <string name="prompt_password_repeat">Repeat password</string>
     <string name="prompt_home_id">Home ID</string>
+    <string name="prompt_time_left">Time left</string>
+    <string name="prompt_done">Done</string>
 
     <string-array name="sex_select_array">
         <item>Women</item>
