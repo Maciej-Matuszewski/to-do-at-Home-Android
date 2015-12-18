@@ -1,10 +1,12 @@
 package com.gr3mlin106.to_do_at_home;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +22,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableListView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -35,8 +41,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements ObservableScrollViewCallbacks, NavigationView.OnNavigationItemSelectedListener {
 
     private ListView listview;
     private TaskAdapter taskAdapter;
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,19 +82,14 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         }
 
+        //ObservableListView listView = (ObservableListView) findViewById(R.id.main_taskList_listView);
+        //listView.setScrollViewCallbacks(this);
 
         listview = (ListView) findViewById(R.id.main_taskList_listView);
 
         taskAdapter = new TaskAdapter(this);
 
         listview.setAdapter(taskAdapter);
-
-
-        //mainListView = (ListView) findViewById( R.id.main_taskList_listView);
-
-        ///listAdapter = new ArrayAdapter<String>(this, R.layout.task_list_item, new ArrayList<String>());
-
-        //mainListView.setAdapter(listAdapter);
 
         loadTasks();
 
@@ -104,9 +105,9 @@ public class MainActivity extends AppCompatActivity
             public void done(List<ParseObject> objects, com.parse.ParseException e) {
                 if (e == null) {
 
-                    for(ParseObject task : objects){
+                    for (ParseObject task : objects) {
 
-                        if(!task.getBoolean("done")){
+                        if (!task.getBoolean("done")) {
                             TaskRecord tr = new TaskRecord();
                             tr.title = task.getString("title");
                             tr.id = task.getObjectId();
@@ -173,13 +174,16 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.menu_summary) {
 
-        } else if (id == R.id.nav_slideshow) {
+            Intent i = new Intent(MainActivity.this, SummaryActivity.class);
+            startActivity(i);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.menu_home_manager) {
+
+        } else if (id == R.id.menu_settings) {
+
+        } else if (id == R.id.menu_logout) {
 
         } else if (id == R.id.nav_share) {
 
@@ -191,6 +195,80 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        ActionBar ab = getSupportActionBar();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+
+        if (scrollState == ScrollState.UP) {
+            if (ab.isShowing()) {
+                ab.hide();
+            }
+            if (scrollState == ScrollState.UP) {
+                if (toolbarIsShown()) {
+                    hideToolbar();
+                }
+            }
+        } else if (scrollState == ScrollState.DOWN) {
+            if (!ab.isShowing()) {
+                ab.show();
+            }
+
+            if (toolbarIsHidden()) {
+                showToolbar();
+            }
+        }
+
+
+    }
+
+    private boolean toolbarIsShown() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        return toolbar.getTranslationY() == 0;
+    }
+
+    private boolean toolbarIsHidden() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        return toolbar.getTranslationY() == -toolbar.getHeight();
+    }
+
+    private void showToolbar() {
+        moveToolbar(0);
+    }
+
+    private void hideToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        moveToolbar(-toolbar.getHeight());
+    }
+
+    private void moveToolbar(float toTranslationY) {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        ValueAnimator animator = ValueAnimator.ofFloat(toolbar.getTranslationY(), toTranslationY).setDuration(200);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float translationY = (float) animation.getAnimatedValue();
+                toolbar.setTranslationY(translationY);
+                //toolbar.setTranslationY((View) mScrollable, translationY);
+                //FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) ((View) mScrollable).getLayoutParams();
+                //lp.height = (int) -translationY + getScreenHeight() - lp.topMargin;
+                //((View) mScrollable).requestLayout();
+            }
+        });
+        animator.start();
+    }
+
 }
 
 class TaskAdapter extends BaseAdapter {
@@ -242,8 +320,11 @@ class TaskAdapter extends BaseAdapter {
 
         int hours = (int) (((tr.endDate.getTime() - (new Date()).getTime()) / 1000) / 3600);
 
+        int days = (int) hours/24;
+        hours %=24;
+
         final TextView timeLabel = ((TextView) vi.findViewById(R.id.taskListItem_time));
-        timeLabel.setText(vi.getResources().getString(R.string.prompt_time_left) + ": " + hours + "h");
+        timeLabel.setText(vi.getResources().getString(R.string.prompt_time_left) + ": " + (days > 0 ? (days + "d ") : "") + hours + "h");
 
 
         final View view = vi;

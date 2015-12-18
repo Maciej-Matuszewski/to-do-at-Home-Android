@@ -6,7 +6,7 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="title_activity_main">to-do: Today</string>
+    <string name="title_activity_main">Today</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_add_home">Add home</string>
@@ -19,11 +19,6 @@
     <string name="prompt_home_id">Home ID</string>
     <string name="prompt_time_left">Time left</string>
     <string name="prompt_done">Done</string>
-
-    <string-array name="sex_select_array">
-        <item>Women</item>
-        <item>Men</item>
-    </string-array>
 
     <string name="action_sign_in">Register</string>
     <string name="action_log_in">Login</string>
@@ -39,6 +34,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_summary">Summary</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 
 </resources>

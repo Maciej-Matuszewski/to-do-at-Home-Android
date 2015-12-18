@@ -61,8 +61,17 @@
         </activity>
         <activity
             android:name=".NewHomeCompleteActivity"
-            android:label="@string/title_activity_new_home_complete"></activity>
-        <activity android:name=".ParseTest"></activity>
+            android:label="@string/title_activity_new_home_complete" />
+        <activity android:name=".ParseTest" />
+        <activity
+            android:name=".SummaryActivity"
+            android:label="@string/title_activity_summary"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gr3mlin106.to_do_at_home.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

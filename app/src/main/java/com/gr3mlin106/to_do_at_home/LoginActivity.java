@@ -93,7 +93,8 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(mEmailView.getText().toString(), mPasswordView.getText().toString(), new LogInCallback() {
             @Override
             public void done(ParseUser user, com.parse.ParseException e) {
-                if (user != null) {Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                if (user != null) {
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
                 } else {
