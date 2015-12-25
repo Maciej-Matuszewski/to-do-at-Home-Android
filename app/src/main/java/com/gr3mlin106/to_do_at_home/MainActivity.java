@@ -1,8 +1,10 @@
 package com.gr3mlin106.to_do_at_home;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,12 +38,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ObservableScrollViewCallbacks, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView listview;
     private TaskAdapter taskAdapter;
@@ -54,13 +57,12 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
+        //fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(getBaseContext(), ParseTest.class);
-                startActivity(i);
+                reloadTasks();
             }
         });
 
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        ((TextView) findViewById(R.id.main_date_textView)).setText((new SimpleDateFormat("dd MMMM yyyy")).format(new Date()));
 
         ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -81,9 +84,6 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
             Intent i = new Intent(getBaseContext(), AddHomeActivity.class);
             startActivity(i);
         }
-
-        //ObservableListView listView = (ObservableListView) findViewById(R.id.main_taskList_listView);
-        //listView.setScrollViewCallbacks(this);
 
         listview = (ListView) findViewById(R.id.main_taskList_listView);
 
@@ -93,6 +93,14 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 
         loadTasks();
 
+    }
+
+    private void reloadTasks(){
+        while (!taskAdapter.tasks.isEmpty()){
+            taskAdapter.tasks.remove(0);
+        }
+        taskAdapter.notifyDataSetChanged();
+        loadTasks();
     }
 
     private void loadTasks(){
@@ -107,17 +115,15 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 
                     for (ParseObject task : objects) {
 
-                        if (!task.getBoolean("done")) {
-                            TaskRecord tr = new TaskRecord();
-                            tr.title = task.getString("title");
-                            tr.id = task.getObjectId();
-                            tr.done = task.getBoolean("done");
-                            tr.startDate = task.getDate("startDate");
-                            tr.endDate = task.getDate("endDate");
-                            tr.parseObject = task;
+                        TaskRecord tr = new TaskRecord();
+                        tr.title = task.getString("title");
+                        tr.id = task.getObjectId();
+                        tr.done = task.getBoolean("done");
+                        tr.startDate = task.getDate("startDate");
+                        tr.endDate = task.getDate("endDate");
+                        tr.parseObject = task;
 
-                            taskAdapter.add(tr);
-                        }
+                        taskAdapter.add(tr);
 
 
                     }
@@ -195,80 +201,6 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        ActionBar ab = getSupportActionBar();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-
-        if (scrollState == ScrollState.UP) {
-            if (ab.isShowing()) {
-                ab.hide();
-            }
-            if (scrollState == ScrollState.UP) {
-                if (toolbarIsShown()) {
-                    hideToolbar();
-                }
-            }
-        } else if (scrollState == ScrollState.DOWN) {
-            if (!ab.isShowing()) {
-                ab.show();
-            }
-
-            if (toolbarIsHidden()) {
-                showToolbar();
-            }
-        }
-
-
-    }
-
-    private boolean toolbarIsShown() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        return toolbar.getTranslationY() == 0;
-    }
-
-    private boolean toolbarIsHidden() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        return toolbar.getTranslationY() == -toolbar.getHeight();
-    }
-
-    private void showToolbar() {
-        moveToolbar(0);
-    }
-
-    private void hideToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        moveToolbar(-toolbar.getHeight());
-    }
-
-    private void moveToolbar(float toTranslationY) {
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        ValueAnimator animator = ValueAnimator.ofFloat(toolbar.getTranslationY(), toTranslationY).setDuration(200);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float translationY = (float) animation.getAnimatedValue();
-                toolbar.setTranslationY(translationY);
-                //toolbar.setTranslationY((View) mScrollable, translationY);
-                //FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) ((View) mScrollable).getLayoutParams();
-                //lp.height = (int) -translationY + getScreenHeight() - lp.topMargin;
-                //((View) mScrollable).requestLayout();
-            }
-        });
-        animator.start();
-    }
-
 }
 
 class TaskAdapter extends BaseAdapter {
@@ -307,6 +239,7 @@ class TaskAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
@@ -324,31 +257,44 @@ class TaskAdapter extends BaseAdapter {
         hours %=24;
 
         final TextView timeLabel = ((TextView) vi.findViewById(R.id.taskListItem_time));
-        timeLabel.setText(vi.getResources().getString(R.string.prompt_time_left) + ": " + (days > 0 ? (days + "d ") : "") + hours + "h");
 
+        switch (days){
+            case 0:{
+                timeLabel.setText(vi.getResources().getString(R.string.time_todo) + " " + vi.getResources().getString(R.string.time_today));
+                break;
+            }
+            case 1:{
+                timeLabel.setText(vi.getResources().getString(R.string.time_todo) + " " + vi.getResources().getString(R.string.time_tomorrow));
+                break;
+            }
+            default:{
+                timeLabel.setText(vi.getResources().getString(R.string.time_todo) + " " + vi.getResources().getString(R.string.time_in) + " " + days + " " + vi.getResources().getString(R.string.time_days));
+                break;
+            }
+        }
 
         final View view = vi;
 
         final ImageButton doneButton = (ImageButton) vi.findViewById(R.id.taskListItem_done_button);
-        if(tr.done){
-            doneButton.setVisibility(View.INVISIBLE);
-            timeLabel.setText(vi.getResources().getString(R.string.prompt_done));
-        }
-        else{
-            doneButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        doneButton.setBackgroundColor(vi.getResources().getColor(tr.done ? R.color.colorGreen : R.color.colorInactive));
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                if (!tr.done) {
                     tr.done = true;
-                    timeLabel.setText(v.getResources().getString(R.string.prompt_done));
-                    doneButton.setVisibility(View.INVISIBLE);
-                    ParseObject object = tr.parseObject;
-                    object.put("done",true);
-                    object.saveInBackground();
-
+                } else {
+                    tr.done = false;
                 }
-            });
-        }
+
+
+                doneButton.setBackgroundColor(v.getResources().getColor(tr.done ? R.color.colorGreen : R.color.colorInactive));
+                ParseObject object = tr.parseObject;
+                object.put("done", tr.done);
+                object.saveInBackground();
+
+            }
+        });
 
         return vi;
     }

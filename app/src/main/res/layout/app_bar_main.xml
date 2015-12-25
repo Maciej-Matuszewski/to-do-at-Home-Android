@@ -19,16 +19,65 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    </android.support.design.widget.AppBarLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="1"
+            android:id="@+id/main_actionBar_grid">
 
-    <include layout="@layout/content_main" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/main_date_textView"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:gravity="center_vertical"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_gravity="center_vertical|left"
+                android:layout_marginLeft="15dp" />
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/main_refresh_button"
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ic_tick"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:clickable="true" />
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/main_wallet_button"
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ic_tick"
+                android:layout_column="2"
+                android:layout_row="0"
+                android:clickable="true" />
+
+        </GridLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:clickable="true"
+        android:src="@drawable/ic_menu_share"
+        app:layout_anchor="@id/main_actionBar_grid"
+        android:layout_marginRight="54dp"
+        app:layout_anchorGravity="bottom|right|end"
+        android:visibility="gone" />
+
+
+    <include layout="@layout/content_main" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>

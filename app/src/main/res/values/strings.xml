@@ -25,6 +25,11 @@
     <string name="action_house_connect">Connect to home</string>
     <string name="action_create_house">Create home</string>
 
+    <string name="time_todo">To do </string>
+    <string name="time_today">Today</string>
+    <string name="time_tomorrow">Tomorrow</string>
+    <string name="time_in">in</string>
+    <string name="time_days">days</string>
 
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
