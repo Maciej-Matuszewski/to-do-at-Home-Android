@@ -72,6 +72,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gr3mlin106.to_do_at_home.MainActivity" />
         </activity>
+        <activity
+            android:name=".HomeManagerActivity"
+            android:label="@string/title_activity_home_manager"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".TasksManagerActivity"
+            android:label="@string/title_activity_tasks_manager"
+            android:parentActivityName=".HomeManagerActivity" ></activity>
     </application>
 
 </manifest>

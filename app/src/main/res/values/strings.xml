@@ -11,6 +11,9 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_add_home">Add home</string>
     <string name="title_activity_new_home_complete">Congratulation</string>
+    <string name="title_activity_home_manager">Home manager</string>
+    <string name="title_activity_add_task">Add task</string>
+    <string name="title_activity_tasks_manager">Manage tasks</string>
     <string name="title_summary_fragment_one">Current: done</string>
     <string name="title_summary_fragment_two">Current: not done</string>
     <string name="title_summary_fragment_three">History</string>
@@ -22,6 +25,9 @@
     <string name="prompt_home_id">Home ID</string>
     <string name="prompt_time_left">Time left</string>
     <string name="prompt_done">Done</string>
+    <string name="prompt_title">Title</string>
+    <string name="prompt_frequency">Frequency</string>
+    <string name="prompt_every">Every</string>
 
     <string name="action_sign_in">Register</string>
     <string name="action_log_in">Login</string>
@@ -33,9 +39,15 @@
     <string name="time_yesterday">Yesterday</string>
     <string name="time_tomorrow">Tomorrow</string>
     <string name="time_in">In</string>
+    <string name="time_day">day</string>
     <string name="time_days">days</string>
     <string name="time_days_ago">days ago</string>
 
+
+    <string name="success_task_added">Task successfully added!</string>
+    <string name="success_task_saved">Task successfully saved!</string>
+    <string name="error_all_field_required">All field are required!</string>
+    <string name="error_frequency_more_than_zero">The frequency must be greater than 0</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -45,6 +57,16 @@
         completions."
     </string>
     <string name="title_activity_summary"> </string>
+    <string name="prompt_add_task">Add task</string>
+    <string name="prompt_manage_task">Manage tasks</string>
+    <string name="prompt_log_ot_from_home">log out from home</string>
+    <string name="prompt_remove_home">Remove Home</string>
+    <string name="title_popup_edit_task">Edit task</string>
+    <string name="prompt_save">save</string>
+    <string name="title_popup_add_task">Add task</string>
+    <string name="prompt_are_you_sure">Are you sure?</string>
+    <string name="prompt_yes">Yes</string>
+    <string name="Prompt_no">No</string>
 
 
 </resources>

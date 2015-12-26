@@ -6,6 +6,7 @@
     android:columnCount="3"
     android:rowCount="2"
     android:background="@color/colorWhite"
+    android:elevation="6dp"
     android:columnOrderPreserved="false">
 
     <TextView

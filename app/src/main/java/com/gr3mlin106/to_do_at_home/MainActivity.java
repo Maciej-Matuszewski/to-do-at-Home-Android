@@ -1,14 +1,11 @@
 package com.gr3mlin106.to_do_at_home;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,26 +18,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableListView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        ((TextView)headerView.findViewById(R.id.menu_nav_name)).setText(ParseUser.getCurrentUser().getString("name"));
+        ((TextView)headerView.findViewById(R.id.menu_nav_email)).setText(ParseUser.getCurrentUser().getString("email"));
 
+        headerView.setVisibility(View.VISIBLE);
 
         ((TextView) findViewById(R.id.main_date_textView)).setText((new SimpleDateFormat("dd MMMM yyyy")).format(new Date()));
 
@@ -115,10 +108,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadTasks(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Task");
-        query.whereLessThan("startDate", new Date());
+        //query.whereLessThan("startDate", new Date());
         query.whereGreaterThan("endDate", new Date());
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.orderByAscending("endDate");
+        query.whereEqualTo("home", ParseUser.getCurrentUser().getParseObject("home"));
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, com.parse.ParseException e) {
@@ -208,10 +202,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.menu_summary) {
 
-            Intent i = new Intent(MainActivity.this, SummaryActivity.class);
-            startActivity(i);
+            startActivity(new Intent(MainActivity.this, SummaryActivity.class));
 
         } else if (id == R.id.menu_home_manager) {
+
+            startActivity(new Intent(MainActivity.this, HomeManagerActivity.class));
 
         } else if (id == R.id.menu_settings) {
 

@@ -42,6 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
             Intent i = new Intent(getBaseContext(), MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(i);
+            overridePendingTransition(0,0);
         }
 
         Button loginButton = (Button) findViewById(R.id.welcome_login_button);
