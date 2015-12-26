@@ -45,18 +45,19 @@
                 android:layout_height="50dp"
                 android:id="@+id/main_refresh_button"
                 android:background="@color/colorPrimary"
-                android:src="@drawable/ic_tick"
+                android:src="@drawable/ic_refresh"
                 android:layout_row="0"
-                android:layout_column="1"
-                android:clickable="true" />
+                android:layout_column="2"
+                android:clickable="true"
+                android:foregroundTint="#ffffff" />
 
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/main_wallet_button"
                 android:background="@color/colorPrimary"
-                android:src="@drawable/ic_tick"
-                android:layout_column="2"
+                android:src="@drawable/ic_wallet"
+                android:layout_column="1"
                 android:layout_row="0"
                 android:clickable="true" />
 

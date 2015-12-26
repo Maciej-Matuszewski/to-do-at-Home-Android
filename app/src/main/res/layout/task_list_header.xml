@@ -8,6 +8,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/textView3"
+        android:id="@+id/header_title_textView"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

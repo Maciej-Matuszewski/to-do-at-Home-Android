@@ -4,19 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_summary"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_summary"
             android:title="Summary" />
         <item
             android:id="@+id/menu_home_manager"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home"
             android:title="Home manager" />
         <item
             android:id="@+id/menu_settings"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_settings"
             android:title="Settings" />
         <item
             android:id="@+id/menu_logout"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_logout"
             android:title="Logout" />
     </group>
 

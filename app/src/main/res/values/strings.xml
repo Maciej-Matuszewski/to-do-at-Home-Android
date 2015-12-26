@@ -11,6 +11,9 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_add_home">Add home</string>
     <string name="title_activity_new_home_complete">Congratulation</string>
+    <string name="title_summary_fragment_one">Current: done</string>
+    <string name="title_summary_fragment_two">Current: not done</string>
+    <string name="title_summary_fragment_three">History</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_name">Name</string>
@@ -27,9 +30,11 @@
 
     <string name="time_todo">To do </string>
     <string name="time_today">Today</string>
+    <string name="time_yesterday">Yesterday</string>
     <string name="time_tomorrow">Tomorrow</string>
-    <string name="time_in">in</string>
+    <string name="time_in">In</string>
     <string name="time_days">days</string>
+    <string name="time_days_ago">days ago</string>
 
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -39,8 +44,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_summary">Summary</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_summary"> </string>
 
 
 </resources>

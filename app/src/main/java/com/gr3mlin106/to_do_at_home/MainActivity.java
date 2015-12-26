@@ -66,6 +66,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        findViewById(R.id.main_refresh_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reloadTasks();
+            }
+        });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mainLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -99,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         while (!taskAdapter.tasks.isEmpty()){
             taskAdapter.tasks.remove(0);
         }
+        while (!taskAdapter.heders.isEmpty()){
+            taskAdapter.heders.remove(0);
+        }
         taskAdapter.notifyDataSetChanged();
         loadTasks();
     }
@@ -108,10 +118,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         query.whereLessThan("startDate", new Date());
         query.whereGreaterThan("endDate", new Date());
         query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.orderByAscending("endDate");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, com.parse.ParseException e) {
                 if (e == null) {
+
+
 
                     for (ParseObject task : objects) {
 
@@ -123,6 +136,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         tr.endDate = task.getDate("endDate");
                         tr.parseObject = task;
 
+                        int days = (int) (((tr.endDate.getTime() - (new Date()).getTime()) / 1000) / 3600)/24;
+
+                        switch (days){
+                            case 0:
+                                taskAdapter.addHeader(getResources().getString(R.string.time_today));
+                                break;
+                            case 1:
+                                taskAdapter.addHeader(getResources().getString(R.string.time_tomorrow));
+                                break;
+                            default:
+                                taskAdapter.addHeader(getResources().getString(R.string.time_in) + " " + days + " " + getResources().getString(R.string.time_days));
+                                break;
+                        }
                         taskAdapter.add(tr);
 
 
@@ -207,6 +233,7 @@ class TaskAdapter extends BaseAdapter {
 
     Context context;
     ArrayList <TaskRecord> tasks = new ArrayList<>();
+    ArrayList <String> heders = new ArrayList<>();
 
     private static LayoutInflater inflater = null;
 
@@ -220,6 +247,15 @@ class TaskAdapter extends BaseAdapter {
 
     public void add(TaskRecord taskRecord){
         this.tasks.add(taskRecord);
+        this.heders.add(null);
+    }
+
+    public void addHeader(String title){
+        if(!this.heders.contains(title)){
+            this.tasks.add(null);
+            this.heders.add(title);
+        }
+
     }
 
     @Override
@@ -244,57 +280,43 @@ class TaskAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         View vi = convertView;
-        if (vi == null)
+
+        if(tasks.get(position) != null){
+
             vi = inflater.inflate(R.layout.task_list_item, null);
 
-        final TaskRecord tr = tasks.get(position);
+            final TaskRecord tr = tasks.get(position);
 
-        ((TextView) vi.findViewById(R.id.taskListItem_title)).setText(tr.title);
+            ((TextView) vi.findViewById(R.id.taskListItem_title)).setText(tr.title);
 
-        int hours = (int) (((tr.endDate.getTime() - (new Date()).getTime()) / 1000) / 3600);
+            final View view = vi;
 
-        int days = (int) hours/24;
-        hours %=24;
+            final ImageButton doneButton = (ImageButton) vi.findViewById(R.id.taskListItem_done_button);
+            doneButton.setBackgroundColor(vi.getResources().getColor(tr.done ? R.color.colorGreen : R.color.colorInactive));
+            doneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        final TextView timeLabel = ((TextView) vi.findViewById(R.id.taskListItem_time));
+                    if (!tr.done) {
+                        tr.done = true;
+                    } else {
+                        tr.done = false;
+                    }
 
-        switch (days){
-            case 0:{
-                timeLabel.setText(vi.getResources().getString(R.string.time_todo) + " " + vi.getResources().getString(R.string.time_today));
-                break;
-            }
-            case 1:{
-                timeLabel.setText(vi.getResources().getString(R.string.time_todo) + " " + vi.getResources().getString(R.string.time_tomorrow));
-                break;
-            }
-            default:{
-                timeLabel.setText(vi.getResources().getString(R.string.time_todo) + " " + vi.getResources().getString(R.string.time_in) + " " + days + " " + vi.getResources().getString(R.string.time_days));
-                break;
-            }
-        }
 
-        final View view = vi;
+                    doneButton.setBackgroundColor(v.getResources().getColor(tr.done ? R.color.colorGreen : R.color.colorInactive));
+                    ParseObject object = tr.parseObject;
+                    object.put("done", tr.done);
+                    object.saveInBackground();
 
-        final ImageButton doneButton = (ImageButton) vi.findViewById(R.id.taskListItem_done_button);
-        doneButton.setBackgroundColor(vi.getResources().getColor(tr.done ? R.color.colorGreen : R.color.colorInactive));
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (!tr.done) {
-                    tr.done = true;
-                } else {
-                    tr.done = false;
                 }
+            });
 
+        }else{
+            vi = inflater.inflate(R.layout.task_list_header, null);
 
-                doneButton.setBackgroundColor(v.getResources().getColor(tr.done ? R.color.colorGreen : R.color.colorInactive));
-                ParseObject object = tr.parseObject;
-                object.put("done", tr.done);
-                object.saveInBackground();
-
-            }
-        });
+            ((TextView) vi.findViewById(R.id.header_title_textView)).setText(heders.get(position));
+        }
 
         return vi;
     }
@@ -307,5 +329,6 @@ class TaskRecord{
     Date endDate;
     Boolean done;
     ParseObject parseObject;
+    Boolean history = false;
 
 }
