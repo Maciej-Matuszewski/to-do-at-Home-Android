@@ -35,7 +35,7 @@ public class WelcomeActivity extends AppCompatActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             try {
-                currentUser = currentUser.fetch();
+                currentUser = currentUser.fetchIfNeeded();
             } catch (ParseException e) {
                 e.printStackTrace();
             }

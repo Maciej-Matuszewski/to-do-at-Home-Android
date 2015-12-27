@@ -45,23 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        //fab.setVisibility(View.GONE);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                reloadTasks();
-            }
-        });
-
-        findViewById(R.id.main_refresh_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reloadTasks();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mainLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -119,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (e == null) {
 
 
+                    if(objects.size()>0)findViewById(R.id.nothingToShow_label).setVisibility(View.GONE);
+                    else findViewById(R.id.nothingToShow_label).setVisibility(View.VISIBLE);
 
                     for (ParseObject task : objects) {
 
@@ -187,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_reload_tasks) {
+            reloadTasks();
             return true;
         }
 
@@ -210,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.menu_settings) {
 
-        } else if (id == R.id.menu_logout) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
         } else if (id == R.id.nav_share) {
 

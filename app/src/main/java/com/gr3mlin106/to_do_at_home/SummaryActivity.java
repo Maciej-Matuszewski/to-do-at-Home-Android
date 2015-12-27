@@ -85,23 +85,6 @@ public class SummaryActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_summary, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     public static class PlaceholderFragment extends Fragment {
 
         private int sectionNumber = 0;
@@ -137,10 +120,10 @@ public class SummaryActivity extends AppCompatActivity {
             }
         }
 
-        private View loadFragmentOne(View v){
+        private View loadFragmentOne(final View v){
 
             ListView listView = (ListView) v.findViewById(R.id.summary_fragment_taskList_listView);
-            final TaskAdapterSummaryPageOne taskAdapter = new TaskAdapterSummaryPageOne(this.getContext());
+            final TaskAdapterSummary taskAdapter = new TaskAdapterSummary(this.getContext());
 
             listView.setAdapter(taskAdapter);
 
@@ -154,6 +137,8 @@ public class SummaryActivity extends AppCompatActivity {
                 public void done(List<ParseObject> objects, com.parse.ParseException e) {
                     if (e == null) {
 
+                        if(objects.size()>0)v.findViewById(R.id.nothingToShow_label).setVisibility(View.GONE);
+                        else v.findViewById(R.id.nothingToShow_label).setVisibility(View.VISIBLE);
 
                         for (ParseObject task : objects) {
 
@@ -179,10 +164,10 @@ public class SummaryActivity extends AppCompatActivity {
             return v;
         }
 
-        private View loadFragmentTwo(View v){
+        private View loadFragmentTwo(final View v){
 
             ListView listView = (ListView) v.findViewById(R.id.summary_fragment_taskList_listView);
-            final TaskAdapterSummaryPageOne taskAdapter = new TaskAdapterSummaryPageOne(this.getContext());
+            final TaskAdapterSummary taskAdapter = new TaskAdapterSummary(this.getContext());
 
             listView.setAdapter(taskAdapter);
 
@@ -196,6 +181,8 @@ public class SummaryActivity extends AppCompatActivity {
                 public void done(List<ParseObject> objects, com.parse.ParseException e) {
                     if (e == null) {
 
+                        if(objects.size()>0)v.findViewById(R.id.nothingToShow_label).setVisibility(View.GONE);
+                        else v.findViewById(R.id.nothingToShow_label).setVisibility(View.VISIBLE);
 
                         for (ParseObject task : objects) {
 
@@ -237,10 +224,10 @@ public class SummaryActivity extends AppCompatActivity {
             return v;
         }
 
-        private View loadFragmentThree(View v){
+        private View loadFragmentThree(final View v){
 
             ListView listView = (ListView) v.findViewById(R.id.summary_fragment_taskList_listView);
-            final TaskAdapterSummaryPageOne taskAdapter = new TaskAdapterSummaryPageOne(this.getContext());
+            final TaskAdapterSummary taskAdapter = new TaskAdapterSummary(this.getContext());
 
             listView.setAdapter(taskAdapter);
 
@@ -253,6 +240,8 @@ public class SummaryActivity extends AppCompatActivity {
                 public void done(List<ParseObject> objects, com.parse.ParseException e) {
                     if (e == null) {
 
+                        if(objects.size()>0)v.findViewById(R.id.nothingToShow_label).setVisibility(View.GONE);
+                        else v.findViewById(R.id.nothingToShow_label).setVisibility(View.VISIBLE);
 
                         for (ParseObject task : objects) {
 
@@ -327,7 +316,7 @@ public class SummaryActivity extends AppCompatActivity {
     }
 }
 
-class TaskAdapterSummaryPageOne extends BaseAdapter {
+class TaskAdapterSummary extends BaseAdapter {
 
     Context context;
     ArrayList<TaskRecord> tasks = new ArrayList<>();
@@ -336,7 +325,7 @@ class TaskAdapterSummaryPageOne extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
 
-    public TaskAdapterSummaryPageOne(Context context) {
+    public TaskAdapterSummary(Context context) {
         // TODO Auto-generated constructor stub
         this.context = context;
 

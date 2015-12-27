@@ -59,6 +59,9 @@ public class TasksManagerActivity extends AppCompatActivity {
             public void done(List<ParseObject> objects, com.parse.ParseException e) {
                 if (e == null) {
 
+                    if(objects.size()>0)findViewById(R.id.nothingToShow_label).setVisibility(View.GONE);
+                    else findViewById(R.id.nothingToShow_label).setVisibility(View.VISIBLE);
+
                     taskAdapter.addList(objects);
                     taskAdapter.notifyDataSetChanged();
 
@@ -113,14 +116,8 @@ public class TasksManagerActivity extends AppCompatActivity {
                                     @Override
                                     public void done(ParseException e) {
                                         showMessageInfo(v.getResources().getString(R.string.success_task_added));
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                taskAdapter.add(taskType);
-                                                pw.dismiss();
-                                            }
-                                        }, Snackbar.LENGTH_LONG);
+                                        taskAdapter.add(taskType);
+                                        pw.dismiss();
                                     }
                                 });
                             }else{
@@ -166,6 +163,13 @@ class TasksManagerAdapter extends BaseAdapter {
         this.context = context;
         this.tma = tasksManagerActivity;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public void notifyDataSetChanged(){
+        super.notifyDataSetChanged();
+        if(tasks.size()>0)tma.findViewById(R.id.nothingToShow_label).setVisibility(View.GONE);
+        else tma.findViewById(R.id.nothingToShow_label).setVisibility(View.VISIBLE);
     }
 
     public void add(ParseObject object){
@@ -259,15 +263,8 @@ class TasksManagerAdapter extends BaseAdapter {
                                         @Override
                                         public void done(ParseException e) {
                                             tma.showMessageInfo(v.getResources().getString(R.string.success_task_saved));
-                                            final Handler handler = new Handler();
-                                            handler.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-
-                                                    pw.dismiss();
-                                                    editButton.setBackground(finalVi.getResources().getDrawable(R.color.colorInactive));
-                                                }
-                                            }, Snackbar.LENGTH_LONG);
+                                            pw.dismiss();
+                                            editButton.setBackground(finalVi.getResources().getDrawable(R.color.colorInactive));
                                         }
                                     });
                                 }else{

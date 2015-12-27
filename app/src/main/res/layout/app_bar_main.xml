@@ -22,7 +22,7 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="3"
+            android:columnCount="2"
             android:rowCount="1"
             android:id="@+id/main_actionBar_grid">
 
@@ -43,38 +43,18 @@
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/main_refresh_button"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/ic_refresh"
-                android:layout_row="0"
-                android:layout_column="2"
-                android:clickable="true"
-                android:foregroundTint="#ffffff" />
-
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
                 android:id="@+id/main_wallet_button"
                 android:background="@color/colorPrimary"
                 android:src="@drawable/ic_wallet"
                 android:layout_column="1"
                 android:layout_row="0"
-                android:clickable="true" />
+                android:clickable="true"
+                android:visibility="visible"
+                android:layout_marginRight="3dp" />
 
         </GridLayout>
 
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@drawable/ic_menu_share"
-        app:layout_anchor="@id/main_actionBar_grid"
-        android:layout_marginRight="54dp"
-        app:layout_anchorGravity="bottom|right|end"
-        android:visibility="gone" />
 
 
     <include layout="@layout/content_main" />

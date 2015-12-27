@@ -62,7 +62,6 @@
         <activity
             android:name=".NewHomeCompleteActivity"
             android:label="@string/title_activity_new_home_complete" />
-        <activity android:name=".ParseTest" />
         <activity
             android:name=".SummaryActivity"
             android:label="@string/title_activity_summary"
@@ -79,7 +78,13 @@
         <activity
             android:name=".TasksManagerActivity"
             android:label="@string/title_activity_tasks_manager"
-            android:parentActivityName=".HomeManagerActivity" ></activity>
+            android:parentActivityName=".HomeManagerActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
     </application>
 
 </manifest>

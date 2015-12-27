@@ -15,5 +15,19 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/title_nothing_to_show"
+        android:id="@+id/nothingToShow_label"
+        android:textColor="@color/colorPrimaryDark"
+        android:textIsSelectable="true"
+        android:textStyle="bold"
+        android:textSize="26dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="gone" />
+
 
 </RelativeLayout>
