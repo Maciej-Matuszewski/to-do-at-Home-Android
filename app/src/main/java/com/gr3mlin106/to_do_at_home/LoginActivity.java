@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import java.text.ParseException;
@@ -94,6 +95,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(ParseUser user, com.parse.ParseException e) {
                 if (user != null) {
+
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("user",user);
+                    installation.saveInBackground();
+
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);

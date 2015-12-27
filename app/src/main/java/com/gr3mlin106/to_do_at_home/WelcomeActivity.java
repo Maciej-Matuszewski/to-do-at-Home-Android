@@ -1,17 +1,14 @@
 package com.gr3mlin106.to_do_at_home;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -28,6 +25,8 @@ public class WelcomeActivity extends AppCompatActivity {
         if(!parseInit){
             Parse.enableLocalDatastore(this);
             Parse.initialize(this);
+            ParseInstallation.getCurrentInstallation().saveInBackground();
+
             parseInit =true;
 
         }
@@ -35,7 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             try {
-                currentUser = currentUser.fetchIfNeeded();
+                currentUser.fetchIfNeeded();
             } catch (ParseException e) {
                 e.printStackTrace();
             }

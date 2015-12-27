@@ -34,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -105,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void register(){
 
         if(true){
-            ParseUser user = new ParseUser();
+            final ParseUser user = new ParseUser();
             user.setUsername(mEmailView.getText().toString());
             user.setPassword(mPasswordView.getText().toString());
             user.setEmail(mEmailView.getText().toString());
@@ -115,6 +116,10 @@ public class RegisterActivity extends AppCompatActivity {
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
+
+                        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                        installation.put("user",user);
+                        installation.saveInBackground();
 
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
