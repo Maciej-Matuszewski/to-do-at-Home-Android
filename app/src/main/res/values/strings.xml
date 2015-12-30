@@ -81,6 +81,11 @@
     <string name="title_popup_change_password">Change password</string>
     <string name="error_not_equal_passwords">Passwords are not equal</string>
     <string name="title_nothing_to_show">There is nothing to show</string>
+    <string name="title_activity_update">Please update</string>
+    <string name="prompt_out_of_date">This application is out of date. Please update!</string>
+    <string name="prompt_coming_soon">Coming soon in next version</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-9486440383744688/6210044246</string>
 
 
 </resources>

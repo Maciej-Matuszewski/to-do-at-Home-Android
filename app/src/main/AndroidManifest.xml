@@ -10,11 +10,15 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:protectionLevel="signature"
-        android:name="com.gr3mlin106.to_do_at_home.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="com.gr3mlin106.to_do_at_home.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="com.gr3mlin106.to_do_at_home.permission.C2D_MESSAGE" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -27,63 +31,86 @@
             android:name="com.parse.CLIENT_KEY"
             android:value="ePancB9GZQPfcGrxPThY3qYfdGuAsHtmPZTYuqTE" />
 
-        <activity android:name=".WelcomeActivity">
+        <activity
+            android:name=".WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".WelcomeActivity">
+            android:parentActivityName=".WelcomeActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gr3mlin106.to_do_at_home.WelcomeActivity" />
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RegisterActivity"
+        <activity
+            android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
-            android:parentActivityName=".WelcomeActivity">
+            android:parentActivityName=".WelcomeActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gr3mlin106.to_do_at_home.WelcomeActivity" />
         </activity>
-        <activity android:name=".AddHomeActivity"
+        <activity
+            android:name=".AddHomeActivity"
             android:label="@string/title_activity_add_home"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gr3mlin106.to_do_at_home.MainActivity" />
         </activity>
-        <activity android:name=".NewHomeCompleteActivity"
-            android:label="@string/title_activity_new_home_complete" />
-        <activity android:name=".SummaryActivity"
+        <activity
+            android:name=".NewHomeCompleteActivity"
+            android:label="@string/title_activity_new_home_complete"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SummaryActivity"
             android:label="@string/title_activity_summary"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gr3mlin106.to_do_at_home.MainActivity" />
         </activity>
-        <activity android:name=".HomeManagerActivity"
+        <activity
+            android:name=".HomeManagerActivity"
             android:label="@string/title_activity_home_manager"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".TasksManagerActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TasksManagerActivity"
             android:label="@string/title_activity_tasks_manager"
-            android:parentActivityName=".HomeManagerActivity" />
-        <activity android:name=".SettingsActivity"
+            android:parentActivityName=".HomeManagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"></activity>
 
-        </activity>
+        <activity android:name=".UpdateActivity"
+            android:label="@string/title_activity_update"
+            android:screenOrientation="portrait" />
 
         <service android:name="com.parse.PushService" />
 
-        <receiver android:name="com.parse.ParsePushBroadcastReceiver"
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -91,11 +118,13 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.gr3mlin106.to_do_at_home" />
             </intent-filter>
         </receiver>

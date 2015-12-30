@@ -23,7 +23,14 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.parse.ConfigCallback;
 import com.parse.FindCallback;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -35,12 +42,34 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Double currentVersion = 0.1;
+    public static Boolean showAd = true;
     private ListView listview;
     private TaskAdapter taskAdapter;
+
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+
+            Intent i = new Intent(getBaseContext(), WelcomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(i);
+            overridePendingTransition(0,0);
+        }else try {
+            currentUser.fetchIfNeeded();
+            if(!currentUser.has("home")){
+                Intent i = new Intent(getBaseContext(), AddHomeActivity.class);
+                startActivity(i);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,13 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ((TextView) findViewById(R.id.main_date_textView)).setText((new SimpleDateFormat("dd MMMM yyyy")).format(new Date()));
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-
-        if(!currentUser.has("home")){
-            Intent i = new Intent(getBaseContext(), AddHomeActivity.class);
-            startActivity(i);
-        }
-
         listview = (ListView) findViewById(R.id.main_taskList_listView);
 
         taskAdapter = new TaskAdapter(this);
@@ -75,6 +97,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview.setAdapter(taskAdapter);
 
         loadTasks();
+
+        ParseConfig.getInBackground(new ConfigCallback() {
+            @Override
+            public void done(ParseConfig config, ParseException e) {
+                Double version = config.getDouble("AndroidCurrentVersion");
+                if (version > currentVersion) {
+                    Intent i = new Intent(getBaseContext(), UpdateActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                }
+            }
+        });
+
+        findViewById(R.id.main_wallet_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMessageInfo(getString(R.string.prompt_coming_soon));
+            }
+        });
+
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        if(showAd){
+            final InterstitialAd mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-9486440383744688/8428480649");
+
+            mInterstitialAd.loadAd(adRequest);
+
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    mInterstitialAd.show();
+                }
+            });
+
+            showAd = false;
+        }
+
 
     }
 
@@ -199,9 +264,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
         } else if (id == R.id.nav_share) {
+            showMessageInfo(getString(R.string.prompt_coming_soon));
 
         } else if (id == R.id.nav_send) {
-
+            showMessageInfo(getString(R.string.prompt_coming_soon));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mainLayout);
