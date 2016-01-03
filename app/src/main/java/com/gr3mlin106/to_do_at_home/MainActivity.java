@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
@@ -42,7 +43,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Double currentVersion = 0.1;
+    private Double currentVersion = 1.0;
     public static Boolean showAd = true;
     private ListView listview;
     private TaskAdapter taskAdapter;
@@ -67,10 +68,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(i);
             }
         } catch (ParseException e) {
-            e.printStackTrace();
         }
 
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -101,26 +102,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ParseConfig.getInBackground(new ConfigCallback() {
             @Override
             public void done(ParseConfig config, ParseException e) {
-                Double version = config.getDouble("AndroidCurrentVersion");
-                if (version > currentVersion) {
-                    Intent i = new Intent(getBaseContext(), UpdateActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(i);
-                    overridePendingTransition(0, 0);
+                if (e == null) {
+                    Double version = config.getDouble("AndroidCurrentVersion");
+                    if (version > currentVersion) {
+                        Intent i = new Intent(getBaseContext(), UpdateActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(i);
+                        overridePendingTransition(0, 0);
+                    }
                 }
             }
         });
 
-        findViewById(R.id.main_wallet_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMessageInfo(getString(R.string.prompt_coming_soon));
-            }
-        });
-
-
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                mAdView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
+                mAdView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mAdView.setVisibility(View.VISIBLE);
+            }
+        });
         mAdView.loadAd(adRequest);
 
         if(showAd){
@@ -134,10 +148,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onAdLoaded() {
                     super.onAdLoaded();
                     mInterstitialAd.show();
+                    showAd = false;
                 }
             });
 
-            showAd = false;
+
         }
 
 
@@ -231,15 +246,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_reload_tasks) {
             reloadTasks();
             return true;
+        }else if(id == R.id.action_wallet){
+            showMessageInfo(getString(R.string.prompt_coming_soon));
         }
 
         return super.onOptionsItemSelected(item);
@@ -264,10 +277,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
         } else if (id == R.id.nav_share) {
-            showMessageInfo(getString(R.string.prompt_coming_soon));
 
-        } else if (id == R.id.nav_send) {
-            showMessageInfo(getString(R.string.prompt_coming_soon));
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.prompt_check_this_app) + " \n" + getString(R.string.play_store_link));
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mainLayout);
@@ -285,7 +300,6 @@ class TaskAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
     public TaskAdapter(Context context) {
-        // TODO Auto-generated constructor stub
         this.context = context;
 
         inflater = (LayoutInflater) context

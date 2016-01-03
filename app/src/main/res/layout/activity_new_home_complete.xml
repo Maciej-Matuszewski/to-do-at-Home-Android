@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Home ID: "
+        android:text="@string/prompt_home_id"
         android:id="@+id/newHome_homeID_label"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Password: "
+        android:text="@string/prompt_password"
         android:id="@+id/newHome_password_label"
         android:layout_below="@+id/newHome_homeID_label"
         android:layout_centerHorizontal="true"
@@ -32,7 +32,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Done"
+        android:text="@string/prompt_done"
         android:id="@+id/newHome_done_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
