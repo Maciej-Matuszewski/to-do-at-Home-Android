@@ -110,7 +110,7 @@ public class TasksManagerActivity extends AppCompatActivity {
 
                                 taskType.put("frequency",freq);
                                 taskType.put("home",home);
-                                taskType.put("readyUntil",(new Date()));
+                                taskType.put("readyUntil",(new Date(0)));
                                 taskType.saveInBackground(new SaveCallback() {
 
                                     @Override
