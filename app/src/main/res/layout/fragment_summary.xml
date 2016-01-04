@@ -21,9 +21,9 @@
         android:text="@string/title_nothing_to_show"
         android:id="@+id/nothingToShow_label"
         android:textColor="@color/colorPrimaryDark"
-        android:textIsSelectable="true"
+        android:textIsSelectable="false"
         android:textStyle="bold"
-        android:textSize="26dp"
+        android:textSize="26sp"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical|center_horizontal"
         android:visibility="gone" />

@@ -80,4 +80,5 @@
     <string name="prompt_logout">Wyloguj</string>
     <string name="prompt_change_password">Zmień hasło</string>
     <string name="or_label">LUB</string>
+    <string name="prompt_update">Aktualizuj</string>
 </resources>

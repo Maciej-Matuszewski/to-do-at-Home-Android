@@ -24,8 +24,19 @@
             android:textSize="@dimen/abc_text_size_title_material"
             android:textColor="#ffffff" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dissmisButton"
+            android:layout_gravity="right"
+            android:background="#00ffffff"
+            android:src="@drawable/ic_cross"
+            android:paddingRight="15dp" />
+
 
     </android.support.v7.widget.Toolbar>
+
+
 
     <ScrollView
         android:layout_width="match_parent"

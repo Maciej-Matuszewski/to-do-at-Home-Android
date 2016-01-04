@@ -91,12 +91,13 @@
         completions."</string>
 
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9486440383744688/6210044246</string>
-    <string name="play_store_link" translatable="false">https://play.google.com/store/apps/developer?id=Gr3mlin106</string>
+    <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=com.gr3mlin106.to_do_at_home</string>
     <string name="prompt_logout">Logout</string>
     <string name="prompt_change_password">Change password</string>
     <string name="prompt_change_email">Change email</string>
     <string name="prompt_change_name">Change name</string>
     <string name="or_label">OR</string>
+    <string name="prompt_update">Update</string>
 
 
 </resources>

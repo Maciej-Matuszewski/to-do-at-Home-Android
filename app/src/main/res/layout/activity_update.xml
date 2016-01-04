@@ -15,7 +15,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/prompt_out_of_date"
         android:id="@+id/textView"
-        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="95dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prompt_update"
+        android:id="@+id/update_button"
+        android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:gravity="center" />
+        android:layout_marginTop="15dp" />
 </RelativeLayout>

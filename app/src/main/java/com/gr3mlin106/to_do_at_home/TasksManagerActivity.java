@@ -88,13 +88,20 @@ public class TasksManagerActivity extends AppCompatActivity {
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 ((Activity) this).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 final PopupWindow pw = new PopupWindow(layout, displayMetrics.widthPixels, 845, true);
-                pw.setOutsideTouchable(true);
+                pw.setOutsideTouchable(false);
                 pw.showAsDropDown(layout);
 
                 final ParseObject taskType = new ParseObject("TaskType");
 
                 final TextView title = (TextView) layout.findViewById(R.id.addTask_title);
                 final TextView frequency = (TextView) layout.findViewById(R.id.addTask_frequency);
+
+                layout.findViewById(R.id.dissmisButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pw.dismiss();
+                    }
+                });
 
                 layout.findViewById(R.id.addTask_save_button).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -242,6 +249,13 @@ class TasksManagerAdapter extends BaseAdapter {
 
                     final TextView title = (TextView) layout.findViewById(R.id.editTask_title);
                     final TextView frequency = (TextView) layout.findViewById(R.id.editTask_frequency);
+
+                    layout.findViewById(R.id.dissmisButton).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            pw.dismiss();
+                        }
+                    });
 
                     title.setText(taskType.getString("title"));
                     frequency.setText(taskType.getInt("frequency") + "");

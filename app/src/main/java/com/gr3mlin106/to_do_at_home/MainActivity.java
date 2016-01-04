@@ -43,7 +43,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Double currentVersion = 1.0;
+    private Double currentVersion = 1.1;
     public static Boolean showAd = true;
     private ListView listview;
     private TaskAdapter taskAdapter;
@@ -98,6 +98,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview.setAdapter(taskAdapter);
 
         loadTasks();
+
+        findViewById(R.id.nothingToShow_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TasksManagerActivity.class));
+            }
+        });
 
         ParseConfig.getInBackground(new ConfigCallback() {
             @Override
@@ -182,8 +189,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (e == null) {
 
 
-                    if(objects.size()>0)findViewById(R.id.nothingToShow_label).setVisibility(View.GONE);
-                    else findViewById(R.id.nothingToShow_label).setVisibility(View.VISIBLE);
+                    if(objects.size()>0)findViewById(R.id.nothingToShow).setVisibility(View.GONE);
+                    else findViewById(R.id.nothingToShow).setVisibility(View.VISIBLE);
 
                     for (ParseObject task : objects) {
 
